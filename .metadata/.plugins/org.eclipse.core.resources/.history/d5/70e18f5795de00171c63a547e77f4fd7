@@ -1,0 +1,88 @@
+package clientJava;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import metier.sessions.IRemote;
+
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.swing.JButton;
+import java.awt.SystemColor;
+import java.util.Properties;
+
+public class supprimerP extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					supprimerP frame = new supprimerP();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public supprimerP() {
+		
+		try {
+			Context ctx = null;
+			String appName="";
+			String moduleName="projetEJB";
+			//String distinctName="";
+			String beanName="Ejb_Imp";
+			String remoteInterface=IRemote.class.getName();
+			String name="ejb:"+appName+"/"+moduleName+"/"+beanName+"!"+remoteInterface;
+			Properties p = new Properties();
+			final String PKG_INTERFACES = "org.jboss.ejb.client.naming";
+			p.put(Context.URL_PKG_PREFIXES, PKG_INTERFACES);
+			ctx = new InitialContext(p);
+			final IRemote proxy = (IRemote) ctx.lookup(name);
+			
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblIdProduit = new JLabel("Id Produit");
+		lblIdProduit.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblIdProduit.setBounds(66, 89, 76, 28);
+		contentPane.add(lblIdProduit);
+		
+		textField = new JTextField();
+		textField.setBounds(152, 95, 122, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnSupprimer = new JButton("Supprimer");
+		btnSupprimer.setBackground(SystemColor.activeCaption);
+		btnSupprimer.setBounds(66, 136, 89, 23);
+		contentPane.add(btnSupprimer);
+	}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
+}

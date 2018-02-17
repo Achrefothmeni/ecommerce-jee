@@ -1,0 +1,76 @@
+package clientJava;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+
+public class modifCat extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					modifCat frame = new modifCat();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public modifCat() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblIdCategorie = new JLabel("id Categorie");
+		lblIdCategorie.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblIdCategorie.setBounds(74, 68, 93, 19);
+		contentPane.add(lblIdCategorie);
+		
+		textField = new JTextField();
+		textField.setBounds(177, 69, 86, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblAttributModifier = new JLabel("attribut \u00E0 modifier");
+		lblAttributModifier.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblAttributModifier.setBounds(35, 109, 121, 19);
+		contentPane.add(lblAttributModifier);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(177, 110, 86, 20);
+		contentPane.add(comboBox);
+		
+		JLabel lblNouveauAttribut = new JLabel("nouveau attribut");
+		lblNouveauAttribut.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNouveauAttribut.setBounds(45, 146, 122, 19);
+		contentPane.add(lblNouveauAttribut);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(177, 147, 86, 20);
+		contentPane.add(textField_1);
+	}
+}

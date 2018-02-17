@@ -1,0 +1,128 @@
+package clientJava;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import metier.entities.Categorie;
+import metier.entities.Produit;
+import metier.sessions.IRemote;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.swing.JButton;
+import java.awt.SystemColor;
+import java.util.List;
+import java.util.Properties;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JTable;
+
+public class consulterCat extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTable table;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					consulterCat frame = new consulterCat();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public consulterCat() {
+		
+		try {
+			Context ctx = null;
+			String appName="";
+			String moduleName="projetEJB";
+			//String distinctName="";
+			String beanName="Ejb_Imp";
+			String remoteInterface=IRemote.class.getName();
+			String name="ejb:"+appName+"/"+moduleName+"/"+beanName+"!"+remoteInterface;
+			Properties p = new Properties();
+			final String PKG_INTERFACES = "org.jboss.ejb.client.naming";
+			p.put(Context.URL_PKG_PREFIXES, PKG_INTERFACES);
+			ctx = new InitialContext(p);
+			final IRemote proxy = (IRemote) ctx.lookup(name);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 579, 355);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblIdCategorie = new JLabel("Id Categorie");
+		lblIdCategorie.setBounds(24, 271, 75, 14);
+		contentPane.add(lblIdCategorie);
+		
+		textField = new JTextField();
+		textField.setBounds(109, 268, 86, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnSupprimer = new JButton("supprimer");
+		btnSupprimer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				proxy.deleteCategorie(Long.parseLong(textField.getText()));
+				JOptionPane.showMessageDialog(null, "Categorie Supprimée");
+			}
+		});
+		btnSupprimer.setBackground(SystemColor.activeCaption);
+		btnSupprimer.setBounds(215, 267, 89, 23);
+		contentPane.add(btnSupprimer);
+		
+		table = new JTable();
+		table.setBounds(10, 11, 543, 153);
+		contentPane.add(table);
+		
+		JButton btnConsulter = new JButton("consulter");
+		btnConsulter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Categorie> listeC = proxy.listeCategorie();
+				for(int i = 0; i <listeP.size(); i++)
+		        {
+		            table.setModel(new DefaultTableModel(
+		                    new Object[][] {
+		                            {listeC.get(i).getIdCat(),listeC.get(i).getDesc(),listeP.get(i).getDesignation(),listeP.get(i).getPrix()}
+		                    },
+		                    new String[] {
+		                        "Id Produit", "Description", "Designation", "Prix"
+		                    }
+		                ));
+		        }
+			}
+		});
+		btnConsulter.setBounds(10, 185, 89, 23);
+		contentPane.add(btnConsulter);
+		
+		JButton btnModifier = new JButton("modifier");
+		btnModifier.setBounds(120, 185, 89, 23);
+		contentPane.add(btnModifier);
+	
+	}catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+}
+}

@@ -1,0 +1,93 @@
+package clientJava;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import metier.sessions.IRemote;
+import net.proteanit.sql.DbUtils;
+import metier.entities.*;
+import javax.swing.JTable;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.swing.JButton;
+import java.awt.SystemColor;
+import java.util.List;
+import java.util.Properties;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class consulterP extends JFrame {
+
+	private JPanel contentPane;
+	private JTable table;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					consulterP frame = new consulterP();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public consulterP() {
+		
+		try {
+			Context ctx = null;
+			String appName="";
+			String moduleName="projetEJB";
+			//String distinctName="";
+			String beanName="Ejb_Imp";
+			String remoteInterface=IRemote.class.getName();
+			String name="ejb:"+appName+"/"+moduleName+"/"+beanName+"!"+remoteInterface;
+			Properties p = new Properties();
+			final String PKG_INTERFACES = "org.jboss.ejb.client.naming";
+			p.put(Context.URL_PKG_PREFIXES, PKG_INTERFACES);
+			ctx = new InitialContext(p);
+			final IRemote proxy = (IRemote) ctx.lookup(name);
+			
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 591, 373);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		table = new JTable();
+		table.setBounds(10, 25, 555, 184);
+		contentPane.add(table);
+		
+		JButton btnAfficher = new JButton("afficher");
+		btnAfficher.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Produit> listeP = proxy.listeProduit();
+				 DefaultTableModel model = new DefaultTableModel();
+				 table.setModel(model);
+				
+			}
+		});
+		btnAfficher.setBackground(SystemColor.activeCaption);
+		btnAfficher.setBounds(10, 246, 89, 23);
+		contentPane.add(btnAfficher);
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+}
+}

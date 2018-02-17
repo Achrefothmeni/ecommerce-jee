@@ -1,0 +1,114 @@
+package clientJava;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.util.Properties;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import metier.sessions.IRemote;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class modifP extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					modifP frame = new modifP();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public modifP() {
+		
+		try {
+			Context ctx = null;
+			String appName="";
+			String moduleName="projetEJB";
+			//String distinctName="";
+			String beanName="Ejb_Imp";
+			String remoteInterface=IRemote.class.getName();
+			String name="ejb:"+appName+"/"+moduleName+"/"+beanName+"!"+remoteInterface;
+			Properties p = new Properties();
+			final String PKG_INTERFACES = "org.jboss.ejb.client.naming";
+			p.put(Context.URL_PKG_PREFIXES, PKG_INTERFACES);
+			ctx = new InitialContext(p);
+			final IRemote proxy = (IRemote) ctx.lookup(name);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Id Produit");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel.setBounds(64, 61, 69, 20);
+		contentPane.add(lblNewLabel);
+		
+		textField = new JTextField();
+		textField.setBounds(136, 63, 86, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Choisissez", "Description", "Designation", "Prix", "Quantite"}));
+		comboBox.setBounds(136, 112, 86, 20);
+		contentPane.add(comboBox);
+		
+		JLabel lblAttributModifier = new JLabel("Attribut \u00E0 modifier");
+		lblAttributModifier.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblAttributModifier.setBounds(10, 112, 123, 20);
+		contentPane.add(lblAttributModifier);
+		
+		JLabel lblNouveauAttribut = new JLabel("Nouveau Attribut");
+		lblNouveauAttribut.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNouveauAttribut.setBounds(10, 151, 123, 20);
+		contentPane.add(lblNouveauAttribut);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(136, 153, 86, 20);
+		contentPane.add(textField_1);
+		
+		JButton btnModifier = new JButton("modifier");
+		btnModifier.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Produit p 
+			}
+		});
+		btnModifier.setBounds(10, 201, 89, 23);
+		contentPane.add(btnModifier);
+	
+	}catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+}
+}
